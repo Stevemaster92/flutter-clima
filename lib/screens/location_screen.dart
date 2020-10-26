@@ -14,7 +14,7 @@ class LocationScreen extends StatefulWidget {
 
 class _LocationScreenState extends State<LocationScreen> {
   int temp;
-  String city, weatherIcon, message;
+  String city, weatherIcon, message, description;
   WeatherModel model = WeatherModel();
 
   @override
@@ -34,6 +34,7 @@ class _LocationScreenState extends State<LocationScreen> {
       }
 
       int condition = data["weather"][0]["id"];
+      description = data["weather"][0]["description"];
       temp = (data["main"]["temp"] as double).floor();
       city = data["name"];
 
@@ -87,21 +88,50 @@ class _LocationScreenState extends State<LocationScreen> {
                   ),
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.only(left: 20.0),
-                child: Row(
-                  children: <Widget>[
-                    Text('$temp°', style: kTempTextStyle),
-                    Text(weatherIcon, style: kConditionTextStyle),
-                  ],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(weatherIcon, style: kConditionTextStyle),
+                  Row(
+                    children: [
+                      Text(temp.toString(), style: kTempValueTextStyle),
+                      SizedBox(width: 10.0),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            decoration: kTempUnitBoxDecoration,
+                            child: Text("O", style: kTempUnitTextStyle),
+                          ),
+                          Text("now", style: kTempSubTextStyle),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
               Padding(
-                padding: EdgeInsets.only(right: 20.0, bottom: 20.0),
-                child: Text(
-                  "$message in $city!",
-                  textAlign: TextAlign.right,
-                  style: kMessageTextStyle,
+                padding: EdgeInsets.all(20.0),
+                child: Column(
+                  children: [
+                    Text(
+                      "$message",
+                      textAlign: TextAlign.right,
+                      style: kMessageTextStyle,
+                    ),
+                    SizedBox(height: 10.0),
+                    Text.rich(
+                      TextSpan(
+                          text: "There's $description in ",
+                          style: kDescriptionTextStyle,
+                          children: [
+                            TextSpan(
+                                text: "$city",
+                                style: TextStyle(fontStyle: FontStyle.italic))
+                          ]),
+                      textAlign: TextAlign.right,
+                    )
+                  ],
                 ),
               ),
             ],
