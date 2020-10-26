@@ -9,13 +9,10 @@ class NetworkHelper {
   NetworkHelper(this.url);
 
   Future<dynamic> getData() async {
-    http.Response res = await http.get("$url&appid=$kOwmApiKey");
+    http.Response res = await http.get("$url&units=metric&appid=$kOwmApiKey");
 
     if (res.statusCode == 200) {
       return jsonDecode(res.body);
-      // int id = data["weather"][0]["id"];
-      // double temp = data["main"]["temp"];
-      // String city = data["name"];
     } else {
       print("${res.statusCode}: No weather data found");
     }
