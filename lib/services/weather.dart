@@ -7,11 +7,13 @@ class WeatherModel {
     Location location = Location();
     await location.getCurrentLocation();
 
-    NetworkHelper networkHelper = NetworkHelper(
+    return NetworkHelper(
       "$kOwmUrl?lat=${location.latitude}&lon=${location.longitude}",
-    );
+    ).getData();
+  }
 
-    return networkHelper.getData();
+  Future<dynamic> getCityWeather(String city) {
+    return NetworkHelper("$kOwmUrl?q=$city").getData();
   }
 
   String getWeatherIcon(int condition) {

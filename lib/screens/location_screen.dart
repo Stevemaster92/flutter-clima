@@ -1,3 +1,4 @@
+import 'package:clima/screens/city_screen.dart';
 import 'package:clima/services/weather.dart';
 import 'package:clima/utilities/constants.dart';
 import 'package:flutter/material.dart';
@@ -47,11 +48,12 @@ class _LocationScreenState extends State<LocationScreen> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('images/location_background.jpg'),
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-                Colors.white.withOpacity(0.8), BlendMode.dstATop),
-          ),
+              image: AssetImage('images/location_background.jpg'),
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(
+                Colors.white.withOpacity(0.5),
+                BlendMode.dstATop,
+              )),
         ),
         constraints: BoxConstraints.expand(),
         child: SafeArea(
@@ -67,17 +69,21 @@ class _LocationScreenState extends State<LocationScreen> {
                       var data = await model.getLocationWeather();
                       updateUI(data);
                     },
-                    child: Icon(
-                      Icons.near_me,
-                      size: 50.0,
-                    ),
+                    child: Icon(Icons.near_me, size: 50.0),
                   ),
                   FlatButton(
-                    onPressed: () {},
-                    child: Icon(
-                      Icons.location_city,
-                      size: 50.0,
-                    ),
+                    onPressed: () async {
+                      var typedCity = await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CityScreen()),
+                      );
+
+                      if (typedCity != null) {
+                        var data = await model.getCityWeather(typedCity);
+                        updateUI(data);
+                      }
+                    },
+                    child: Icon(Icons.location_city, size: 50.0),
                   ),
                 ],
               ),
@@ -85,19 +91,13 @@ class _LocationScreenState extends State<LocationScreen> {
                 padding: EdgeInsets.only(left: 20.0),
                 child: Row(
                   children: <Widget>[
-                    Text(
-                      '$temp°',
-                      style: kTempTextStyle,
-                    ),
-                    Text(
-                      weatherIcon,
-                      style: kConditionTextStyle,
-                    ),
+                    Text('$temp°', style: kTempTextStyle),
+                    Text(weatherIcon, style: kConditionTextStyle),
                   ],
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(right: 20.0),
+                padding: EdgeInsets.only(right: 20.0, bottom: 20.0),
                 child: Text(
                   "$message in $city!",
                   textAlign: TextAlign.right,

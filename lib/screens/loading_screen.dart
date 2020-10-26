@@ -13,11 +13,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
     WeatherModel model = WeatherModel();
     var data = await model.getLocationWeather();
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return LocationScreen(
-        locationWeather: data,
-      );
-    }));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LocationScreen(locationWeather: data),
+      ),
+    );
   }
 
   @override
@@ -30,18 +31,15 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SpinKitWave(
-            color: Colors.white,
-          ),
-          SizedBox(
-            height: 20.0,
-          ),
-          Text("Loading the weather data..."),
-        ],
-      )),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SpinKitWave(color: Colors.white),
+            SizedBox(height: 20.0),
+            Text("Loading the weather data..."),
+          ],
+        ),
+      ),
     );
   }
 }
