@@ -34,11 +34,14 @@ class _LocationScreenState extends State<LocationScreen> {
         description = "";
         city = "";
         countryCode = "";
+        timeBeforeSunrise = Duration();
+        timeBeforeSunset = Duration();
         return;
       }
 
-      int condition = data["weather"][0]["id"];
       temp = (data["main"]["temp"] as double).floor();
+      weatherIcon = model.getWeatherIcon(data["weather"][0]["id"]);
+      message = model.getMessage(temp);
       description = data["weather"][0]["description"];
       city = data["name"];
       countryCode = data["sys"]["country"];
@@ -53,9 +56,6 @@ class _LocationScreenState extends State<LocationScreen> {
       );
       timeBeforeSunrise = now.difference(sunrise);
       timeBeforeSunset = now.difference(sunset);
-
-      weatherIcon = model.getWeatherIcon(condition);
-      message = model.getMessage(temp);
     });
   }
 

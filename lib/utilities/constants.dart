@@ -31,7 +31,7 @@ const kTempUnitTextStyle = TextStyle(
 
 const kTempSubTextStyle = TextStyle(
   fontFamily: 'Spartan',
-  fontSize: 30.0,
+  fontSize: 24.0,
   letterSpacing: 10.0,
 );
 
