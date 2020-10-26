@@ -1,6 +1,7 @@
 import 'package:clima/screens/city_screen.dart';
 import 'package:clima/services/weather.dart';
 import 'package:clima/utilities/constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LocationScreen extends StatefulWidget {
@@ -14,7 +15,8 @@ class LocationScreen extends StatefulWidget {
 
 class _LocationScreenState extends State<LocationScreen> {
   int temp;
-  String city, weatherIcon, message, description;
+  String city, weatherIcon, message, description, countryCode;
+  Duration timeBeforeSunset, timeBeforeSunrise;
   WeatherModel model = WeatherModel();
 
   @override
@@ -29,14 +31,28 @@ class _LocationScreenState extends State<LocationScreen> {
         temp = 0;
         weatherIcon = "Error";
         message = "Unable to get weather data";
+        description = "";
         city = "";
+        countryCode = "";
         return;
       }
 
       int condition = data["weather"][0]["id"];
-      description = data["weather"][0]["description"];
       temp = (data["main"]["temp"] as double).floor();
+      description = data["weather"][0]["description"];
       city = data["name"];
+      countryCode = data["sys"]["country"];
+      DateTime now = DateTime.now().toUtc();
+      DateTime sunrise = DateTime.fromMillisecondsSinceEpoch(
+        data["sys"]["sunrise"] * 1000,
+        isUtc: true,
+      );
+      DateTime sunset = DateTime.fromMillisecondsSinceEpoch(
+        data["sys"]["sunset"] * 1000,
+        isUtc: true,
+      );
+      timeBeforeSunrise = now.difference(sunrise);
+      timeBeforeSunset = now.difference(sunset);
 
       weatherIcon = model.getWeatherIcon(condition);
       message = model.getMessage(temp);
@@ -126,7 +142,7 @@ class _LocationScreenState extends State<LocationScreen> {
                           style: kDescriptionTextStyle,
                           children: [
                             TextSpan(
-                                text: "$city",
+                                text: "$city, $countryCode",
                                 style: TextStyle(fontStyle: FontStyle.italic))
                           ]),
                       textAlign: TextAlign.right,
@@ -134,6 +150,71 @@ class _LocationScreenState extends State<LocationScreen> {
                   ],
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blueGrey,
+                    border: Border.all(color: Colors.blueGrey, width: 3.0),
+                    borderRadius: BorderRadius.circular(50.0),
+                  ),
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 40.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Image.asset(
+                              "images/sunrise.png",
+                              width: 64.0,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "${timeBeforeSunrise.inHours.abs()}h ${timeBeforeSunrise.inMinutes % 60}min",
+                                  style: kSunTitleTextStyle,
+                                ),
+                                Text(
+                                  "${timeBeforeSunrise.isNegative ? "before" : "after"} sunrise",
+                                  style: kSunBodyTextStyle,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Image.asset(
+                              "images/sunset.png",
+                              width: 64.0,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "${timeBeforeSunset.inHours.abs()}h ${timeBeforeSunset.inMinutes % 60}min",
+                                  style: kSunTitleTextStyle,
+                                ),
+                                Text(
+                                  "${timeBeforeSunset.isNegative ? "before" : "after"} sunset",
+                                  style: kSunBodyTextStyle,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),

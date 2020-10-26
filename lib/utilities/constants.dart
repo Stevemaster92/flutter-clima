@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 const kOwmUrl = "https://api.openweathermap.org/data/2.5/weather";
 const kOwmApiKey = "35cfe7719f762f1108a0de1ae1f14f46";
 
+const kConditionTextStyle = TextStyle(
+  fontSize: 80.0,
+);
+
 const kTempValueTextStyle = TextStyle(
   fontFamily: 'Spartan',
   fontWeight: FontWeight.w900,
-  fontSize: 100.0,
+  fontSize: 80.0,
 );
 
 const kTempUnitBoxDecoration = BoxDecoration(
@@ -21,7 +25,7 @@ const kTempUnitBoxDecoration = BoxDecoration(
 const kTempUnitTextStyle = TextStyle(
   fontFamily: 'Spartan',
   fontWeight: FontWeight.w900,
-  fontSize: 50.0,
+  fontSize: 40.0,
   height: 1.0,
 );
 
@@ -34,7 +38,7 @@ const kTempSubTextStyle = TextStyle(
 const kMessageTextStyle = TextStyle(
   fontFamily: 'Spartan',
   fontWeight: FontWeight.w900,
-  fontSize: 60.0,
+  fontSize: 50.0,
 );
 
 const kDescriptionTextStyle = TextStyle(
@@ -48,8 +52,15 @@ const kButtonTextStyle = TextStyle(
   fontWeight: FontWeight.w900,
 );
 
-const kConditionTextStyle = TextStyle(
-  fontSize: 100.0,
+const kSunTitleTextStyle = TextStyle(
+    fontSize: 24.0,
+    fontFamily: 'Spartan',
+    fontWeight: FontWeight.w900,
+    letterSpacing: 2.0);
+
+const kSunBodyTextStyle = TextStyle(
+  fontFamily: 'Spartan',
+  fontSize: 16.0,
 );
 
 const kTextFieldInputDecoration = InputDecoration(
